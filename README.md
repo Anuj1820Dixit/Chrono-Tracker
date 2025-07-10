@@ -63,7 +63,7 @@ Chrono Tracker is a modern productivity and study app built with Expo React Nati
 - Make sure your `app.json` references only your custom icon in `assets/icon.png`.
 
 ## Screenshots
-Add screenshots of your app here for the Play Store and documentation.
+
 
 ## License
 MIT
