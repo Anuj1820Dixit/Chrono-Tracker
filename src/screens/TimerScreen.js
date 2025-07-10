@@ -12,6 +12,7 @@ import {
   LayoutAnimation,
   UIManager,
   Dimensions,
+  TextInput as RNTextInput,
 } from 'react-native';
 import {
   Text,
@@ -29,7 +30,6 @@ import {
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Audio } from 'expo-av';
-import { AdMobBanner, AdMobInterstitial, AdMobRewarded } from 'expo-ads-admob';
 
 const QUOTES = [
   'Time is what we want most, but what we use worst.',
@@ -184,9 +184,6 @@ export default function TimerScreen({ navigation }) {
   const soundRef = useRef(null);
   const [focusMenuVisible, setFocusMenuVisible] = useState(false);
   const [breakMenuVisible, setBreakMenuVisible] = useState(false);
-  // Add state for skip breaks
-  const [skipCount, setSkipCount] = useState(0);
-  const MAX_FREE_SKIPS = 2;
 
   // --- Dynamic Quote ---
   useEffect(() => {
@@ -305,37 +302,10 @@ export default function TimerScreen({ navigation }) {
   const handleSavePreset = () => {
     setSnackbar({ visible: true, msg: 'Preset saved! (Not implemented)' });
   };
-  // Show interstitial after session complete
-  const handleSessionComplete = async () => {
-    try {
-      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
-      await AdMobInterstitial.showAdAsync();
-    } catch (e) {
-      console.log('Interstitial ad failed:', e);
-    }
-  };
-
-  // Skip break logic
-  const handleSkipBreak = async () => {
-    if (skipCount < MAX_FREE_SKIPS) {
-      setSkipCount(skipCount + 1);
-      setIsBreak(false);
-      setRemaining(focusDuration * 60);
-      setSnackbar({ visible: true, msg: 'Break skipped! Focus session started.' });
-    } else {
-      // Require rewarded ad
-      try {
-        await AdMobRewarded.requestAdAsync();
-        await AdMobRewarded.showAdAsync();
-        // Only increment skip if ad watched
-        setSkipCount(skipCount + 1);
-        setIsBreak(false);
-        setRemaining(focusDuration * 60);
-        setSnackbar({ visible: true, msg: 'Break skipped! Focus session started.' });
-      } catch (e) {
-        console.log('Rewarded ad failed or not watched:', e);
-      }
-    }
+  const handleSkipBreak = () => {
+    setIsBreak(false);
+    setRemaining(focusDuration * 60);
+    setSnackbar({ visible: true, msg: 'Break skipped! Focus session started.' });
   };
 
   // --- Timer display ---
@@ -466,14 +436,22 @@ export default function TimerScreen({ navigation }) {
               </Menu>
             </View>
             {/* Task Input */}
-            <TextInput
-              label="What will you focus on?"
+            <Text style={{ color: '#fff', marginBottom: 4, marginLeft: 2 }}>What will you focus on?</Text>
+            <RNTextInput
               value={task}
               onChangeText={setTask}
-              style={styles.input}
-              mode="outlined"
-              theme={{ colors: { background: colors.card, text: colors.text, placeholder: colors.inactive, primary: colors.text } }}
-              placeholderTextColor={colors.text}
+              placeholder="What will you focus on?"
+              placeholderTextColor="#bbb"
+              style={{
+                color: '#fff',
+                backgroundColor: '#222',
+                borderWidth: 1,
+                borderColor: '#fff',
+                borderRadius: 8,
+                padding: 10,
+                fontSize: 16,
+                marginBottom: 16,
+              }}
             />
             {/* Duration/Break Pickers */}
             <View style={styles.pickerRow}>
@@ -619,15 +597,24 @@ export default function TimerScreen({ navigation }) {
           <View style={styles.modalBg}>
             <Card style={styles.modalCard}>
               <Card.Content>
-                <Text style={{ color: colors.text }}>Enter custom focus time (1–300 min):</Text>
-                <TextInput
+                <Text style={{ color: '#fff' }}>Enter custom focus time (minutes):</Text>
+                <RNTextInput
                   value={customFocus}
                   onChangeText={setCustomFocus}
                   keyboardType="numeric"
-                  style={{ marginVertical: 12, color: colors.text }}
-                  mode="outlined"
+                  placeholder="e.g. 45"
+                  placeholderTextColor="#bbb"
+                  style={{
+                    color: '#fff',
+                    backgroundColor: '#222',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 16,
+                    marginVertical: 12,
+                  }}
                   autoFocus
-                  theme={{ colors: { background: colors.card, text: colors.text, placeholder: colors.inactive } }}
                 />
                 <Button mode="contained" onPress={handleCustomFocus}>Set</Button>
                 <Button onPress={() => setShowCustomFocus(false)} style={{ marginTop: 8 }}>Cancel</Button>
@@ -639,15 +626,24 @@ export default function TimerScreen({ navigation }) {
           <View style={styles.modalBg}>
             <Card style={styles.modalCard}>
               <Card.Content>
-                <Text style={{ color: colors.text }}>Enter custom break time (1–300 min):</Text>
-                <TextInput
+                <Text style={{ color: '#fff' }}>Enter custom break time (minutes):</Text>
+                <RNTextInput
                   value={customBreak}
                   onChangeText={setCustomBreak}
                   keyboardType="numeric"
-                  style={{ marginVertical: 12, color: colors.text }}
-                  mode="outlined"
+                  placeholder="e.g. 5"
+                  placeholderTextColor="#bbb"
+                  style={{
+                    color: '#fff',
+                    backgroundColor: '#222',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 16,
+                    marginVertical: 12,
+                  }}
                   autoFocus
-                  theme={{ colors: { background: colors.card, text: colors.text, placeholder: colors.inactive } }}
                 />
                 <Button mode="contained" onPress={handleCustomBreak}>Set</Button>
                 <Button onPress={() => setShowCustomBreak(false)} style={{ marginTop: 8 }}>Cancel</Button>
@@ -659,16 +655,24 @@ export default function TimerScreen({ navigation }) {
           <View style={styles.modalBg}>
             <Card style={styles.modalCard}>
               <Card.Content>
-                <Text style={{ color: colors.text }}>Enter custom countdown (mm:ss):</Text>
-                <TextInput
+                <Text style={{ color: '#fff' }}>Enter custom countdown (seconds):</Text>
+                <RNTextInput
                   value={customCountdown}
                   onChangeText={setCustomCountdown}
-                  placeholder="e.g. 2:30 for 2 min 30 sec"
                   keyboardType="numeric"
-                  style={{ marginVertical: 12, color: colors.text }}
-                  mode="outlined"
+                  placeholder="e.g. 150"
+                  placeholderTextColor="#bbb"
+                  style={{
+                    color: '#fff',
+                    backgroundColor: '#222',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 16,
+                    marginVertical: 12,
+                  }}
                   autoFocus
-                  theme={{ colors: { background: colors.card, text: colors.text, placeholder: colors.inactive } }}
                 />
                 <Button mode="contained" onPress={() => {
                   // Parse mm:ss
@@ -689,13 +693,6 @@ export default function TimerScreen({ navigation }) {
             </Card>
           </View>
         </Modal>
-        <AdMobBanner
-          bannerSize="smartBannerPortrait"
-          adUnitID="ca-app-pub-3940256099942544/6300978111"
-          servePersonalizedAds={false}
-          onDidFailToReceiveAdWithError={console.log}
-          style={{ alignSelf: 'center', marginTop: 8 }}
-        />
       </View>
     </ScrollView>
   );

@@ -31,7 +31,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 import * as Notifications from 'expo-notifications';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AdMobBanner } from 'expo-ads-admob';
 
 const TAGS = [
   { label: 'Work', value: 'Work', color: '#5C6BC0' },
@@ -631,13 +630,6 @@ export default function PlannerScreen({ navigation }) {
       >
         {snackbar.msg}
       </Snackbar>
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        servePersonalizedAds={false}
-        onDidFailToReceiveAdWithError={console.log}
-        style={{ alignSelf: 'center', marginTop: 8 }}
-      />
     </View>
   );
 }

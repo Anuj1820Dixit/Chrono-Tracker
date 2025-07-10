@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, useTheme, Divider } from 'react-native-paper';
-import { AdMobBanner } from 'expo-ads-admob';
 
 const OPTIONS = [
   { label: 'Create Room', screen: 'CreateRoom' },
@@ -26,13 +25,6 @@ export default function MoreScreen({ navigation }) {
           {idx < OPTIONS.length - 1 && <Divider style={styles.divider} />}
         </React.Fragment>
       ))}
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        servePersonalizedAds={false}
-        onDidFailToReceiveAdWithError={console.log}
-        style={{ alignSelf: 'center', marginTop: 8 }}
-      />
     </View>
   );
 }

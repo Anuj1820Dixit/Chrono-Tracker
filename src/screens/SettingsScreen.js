@@ -19,7 +19,6 @@ import {
 } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeContext, scheduleReminderNotification } from '../../App';
-import { AdMobBanner } from 'expo-ads-admob';
 
 const REMINDER_OPTIONS = [1, 5, 10, 15, 30];
 const TIMER_MODES = ['Pomodoro', 'Countdown', 'Stopwatch'];
@@ -247,13 +246,6 @@ export default function SettingsScreen({ navigation }) {
           </Button>
         </Card.Content>
       </Card>
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        servePersonalizedAds={false}
-        onDidFailToReceiveAdWithError={console.log}
-        style={{ alignSelf: 'center', marginTop: 8 }}
-      />
     </ScrollView>
   );
 }

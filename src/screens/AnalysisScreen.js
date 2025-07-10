@@ -20,7 +20,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PieChart as ChartKitPieChart, BarChart as ChartKitBarChart } from 'react-native-chart-kit';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { AdMobBanner } from 'expo-ads-admob';
 
 const TASK_COLORS = {
   Study: '#6200ee',
@@ -290,13 +289,6 @@ export default function AnalysisScreen() {
           <View style={styles.sidebarRow}><Text style={styles.sidebarLabel}>Sessions</Text><Text style={styles.sidebarValue}>{tasks.filter(t => t.completed && isInWeek((t.completedDate || t.startTimeDate || todayStr), ...getWeekRange(todayStr))).length}</Text></View>
         </View>
       </ScrollView>
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        servePersonalizedAds={false}
-        onDidFailToReceiveAdWithError={console.log}
-        style={{ alignSelf: 'center', marginTop: 8 }}
-      />
     </View>
   );
 }

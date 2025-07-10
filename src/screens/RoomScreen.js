@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, Button } from 'react-native';
 import { supabase } from '../lib/supabase';
-import { AdMobBanner } from 'expo-ads-admob';
 
 // NOTE: This is a collaborative timer. All users in this room see the same timer. When anyone starts, pauses, or resets, it syncs for everyone in real time.
 
@@ -146,13 +145,6 @@ export default function RoomScreen({ route }) {
         />
         <Button title="Send" onPress={handleSend} />
       </View>
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        servePersonalizedAds={false}
-        onDidFailToReceiveAdWithError={console.log}
-        style={{ alignSelf: 'center', marginTop: 8 }}
-      />
     </View>
   );
 }

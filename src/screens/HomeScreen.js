@@ -8,7 +8,6 @@ import { Dimensions } from 'react-native';
 import { useFonts, Montserrat_700Bold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import { useAuth } from './AuthProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AdMobBanner } from 'expo-ads-admob';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -215,13 +214,6 @@ export default function HomeScreen({ navigation, route }) {
           />
         </View>
       </ScrollView>
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        servePersonalizedAds={false}
-        onDidFailToReceiveAdWithError={console.log}
-        style={{ alignSelf: 'center', marginTop: 8 }}
-      />
     </>
   );
 }
